@@ -1,21 +1,14 @@
 #!/usr/bin/env bash
+# Sweep through a given directory structure and convert all .m4a files to .mp3 format using ffmpeg.
+# The script also copies any existing .mp3 files to the output directory.
 
-# =====================================================
-# Configuration Variables
-# IMPORTANT: Set these paths correctly before running!
-# =====================================================
 SOURCE_ROOT="${1:-.}"  # Source directory passed as the first argument (defaults to ".")
 OUTPUT_DIR="$HOME/Desktop/mp3dump"                     # <-- Change this!
 
 # Set the quality for transcoded MP3s
 BITRATE="320k" 
 
-
-# =====================================================
-# Validation and Setup
-# =====================================================
-
-echo "--- ALAC to MP3 Converter Initiated ---"
+echo "mkmp3 starting..."
 echo "Source Root: $SOURCE_ROOT"
 echo "Output Folder: $OUTPUT_DIR"
 
@@ -60,7 +53,6 @@ if [ ${#m4a_files[@]} -eq 0 ]; then
     skip_conversion=true
 fi
 
-# Use 'find' with -print0 and 'read -d' to safely handle filenames with spaces or special characters.
 if [ -z "$skip_conversion" ]; then
     echo "Found ${#m4a_files[@]} .m4a files to convert."
     for FULL_PATH in "${m4a_files[@]}"; do
@@ -74,9 +66,6 @@ if [ -z "$skip_conversion" ]; then
 
         echo -e "\n[${COUNT}] Processing: $FULL_PATH"
         echo "       -> Outputting to: $OUTPUT_FILE"
-    
-        # 2. Perform the conversion using ffmpeg.
-        #ffmpeg -i "$FULL_PATH" -c:a libmp3lame -b:a "$BITRATE" -vn -y "$OUTPUT_FILE"
 
         # 2. Perform the conversion using ffmpeg with additional flags for better compatibility and metadata handling.
         ffmpeg -i "$FULL_PATH" \
@@ -88,8 +77,6 @@ if [ -z "$skip_conversion" ]; then
             -y \
             -loglevel error \
             "$OUTPUT_FILE"
-        # Dry run: Uncomment the line below to simulate the conversion without actually creating files.
-        # echo "Dry run: Would convert '$FULL_PATH' to '$OUTPUT_FILE' with bitrate $BITRATE."
 
         # Check if the last command failed (e.g., corrupted file, missing dependencies)
         if [ $? -ne 0 ]; then
