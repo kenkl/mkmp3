@@ -19,4 +19,4 @@ This is developed/tested on MacOS, but should be adaptable to your flavour of Li
 
 Full disclosure - although I know BASH scripting well enough to do this myself, the effort was greatly reduced by employing LLM (Ollama with gemma4:26b for the record) to barf out code snippets that work straightaway. I _have_ fully tested/vetted the code in this script, of course.
 
-
+2026-08-08: added a .flac phase to the conversion run, added a bit of cleanup for failed conversions, and fix the output directive to _actually_ produce 320kbps CBR .mp3 files.
