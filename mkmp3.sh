@@ -2,6 +2,9 @@
 # Sweep through a given directory structure and convert all .m4a files to .mp3 format using ffmpeg.
 # The script also copies any existing .mp3 files to the output directory.
 
+# If ffmpeg is not installed, there's no point in continuing.
+command -v ffmpeg >/dev/null 2>&1 || { echo "Error: ffmpeg is not installed. Aborting."; exit 1; }
+
 SOURCE_ROOT="${1:-.}"  # Source directory passed as the first argument (defaults to ".")
 OUTPUT_DIR="$HOME/Desktop/mp3dump"                     # <-- Change this!
 
@@ -29,7 +32,7 @@ COUNT=0
 
 # First pass: Find all .m4a files in the source directory and convert them to .mp3
 
-echo -e "\nFirst pass: find/convert .m4a files..."
+echo -e "\nFirst pass: find/convert .m4a (ALAC) files..."
 
 # Initialize empty arrays and starting time
 m4a_files=()
